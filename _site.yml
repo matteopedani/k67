@@ -1,0 +1,7 @@
+name: "K67"
+navbar:
+  title: "Viale J.F. Kennedy 67"
+  left:
+    - text: "caldaia"
+      href: index.html
+

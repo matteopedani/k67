@@ -1,0 +1,110 @@
+---
+title: "My Website"
+---
+---
+title: "Viale J.F. Kennedy 67"
+format: html
+editor: visual
+---
+
+# Primo Piano
+
+<div>
+
+<canvas id="primopianoChart">
+
+</canvas>
+
+</div>
+
+# Piano terra
+
+<div>
+
+<canvas id="pianoterraChart">
+
+</canvas>
+
+</div>
+
+```{=html}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+```
+```{=html}
+<script>
+  const primopianoCtx = document.getElementById('primopianoChart').getContext('2d');
+  const pianoterraCtx = document.getElementById('pianoterraChart').getContext('2d');
+
+  fetch('primopiano.csv') // Sostituisci 'primopiano.csv' con l'effettivo nome del file CSV per il primo piano
+    .then(response => response.text())
+    .then(csvData => {
+      const primopianoData = processData(csvData);
+      createChart(primopianoCtx, primopianoData);
+    })
+    .catch(error => {
+      console.error('Si è verificato un errore durante il recupero dei dati per il primo piano:', error);
+    });
+
+  fetch('pianoterra.csv') // Sostituisci 'pianoterra.csv' con l'effettivo nome del file CSV per il piano terra
+    .then(response => response.text())
+    .then(csvData => {
+      const pianoterraData = processData(csvData);
+      createChart(pianoterraCtx, pianoterraData);
+    })
+    .catch(error => {
+      console.error('Si è verificato un errore durante il recupero dei dati per il piano terra:', error);
+    });
+
+  function processData(csvData) {
+    const lines = csvData.split('\n');
+    const labels = [];
+    const kwACSData = [];
+    const kwRiscaldamentoData = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].split(',');
+      const date = line[0];
+      const kwACS = parseFloat(line[1]);
+      const kwRiscaldamento = parseFloat(line[2]);
+
+      labels.push(date);
+      kwACSData.push(kwACS);
+      kwRiscaldamentoData.push(kwRiscaldamento);
+    }
+
+    return {
+      labels: labels,
+      kwACSData: kwACSData,
+      kwRiscaldamentoData: kwRiscaldamentoData
+    };
+  }
+
+  function createChart(ctx, data) {
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.labels,
+        datasets: [
+          {
+            label: 'Kw acqua calda sanitaria',
+            data: data.kwACSData,
+            borderWidth: 1
+          },
+          {
+            label: 'Kw riscaldamento  ',
+            data: data.kwRiscaldamentoData,
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+</script>
+```
