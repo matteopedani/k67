@@ -1,7 +1,4 @@
 ---
-title: "My Website"
----
----
 title: "Viale J.F. Kennedy 67"
 format: html
 editor: visual

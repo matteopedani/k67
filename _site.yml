@@ -1,4 +1,7 @@
 name: "K67"
+project:
+  type: website
+  output-dir: docs
 navbar:
   title: "Viale J.F. Kennedy 67"
   left:
